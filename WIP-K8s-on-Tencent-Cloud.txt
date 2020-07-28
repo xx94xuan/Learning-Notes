@@ -1,0 +1,313 @@
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+ZZZZ# K8s on Tencent Cloud Ubuntu 18.04.1 ZZZZ
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+
+2019-08-13
+
+[referrence](https://www.tutorialspoint.com/kubernetes/)
+
+Installing Docker
+	- sudo apt-get update ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	- sudo apt-get install apt-transport-https ca-certificates ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	- sudo apt-key adv \
+	   --keyserver hkp://ha.pool.sks-keyservers.net:80 \
+	   --recv-keys 58118E89F3A912897C070ADBF76221572C52609D ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	- echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" | sudo tee /etc/apt/sources.list.d/docker.list ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	- sudo apt-get update ~~~~~~~~~~~~~~~~~~~~ Yeah!
+
+Install Docker Engine
+	(- sudo apt-get install docker-engine ------- Error: dependancies not installed
+	- sudo snap install docker #version 18.06.1-ce ------ Pending: network issue? toooooo slowly)
+	- sudo apt install docker.io ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	- check docker installed correctly by: sudo docker run hello-world ~~~~~~~~~~~~~~~~~~~~ Yeah!
+
+Install etcd 2.0 --> v3.3.13
+	- download the etcd and named specified: curl -L https://github.com/coreos/etcd/releases/download/v2.0.0/etcd-v2.0.0-linux-amd64.tar.gz -o etcd-v2.0.0-linux-amd64.tar.gz ----- Error: 
+	* curl: (56) OpenSSL SSL_read: SSL_ERROR_SYSCALL, errno 104
+	* curl: (7) Failed to connect to github-production-release-asset-2e65be.s3.amazonaws.com port 443: Connection timed out
+	- curl -L https://storage.googleapis.com/etcd/v3.3.13/etcd-v3.3.13-linux-amd64.tar.gz -o etcd-v3.3.13-linux-amd64.tar.gz ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	-  un-tar the package: tar xzvf etcd-v3.3.13-linux-amd64.tar.gz ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	-* rm -rf etcd-v3.3.13-linux-amd64.tar.gz ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	- cd etcd-v3.3.13-linux-amd64.tar.gz ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	- sudo mkdir /opt/bin ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	- sudo cp etcd* /opt/bin ~~~~~~~~~~~~~~~~~~~~ Yeah!
+----------------------------------------------------------------------------------------------------
+
+2019-08-14
+
+~~ Install Kubernetes (on all machines on cluster)
+	- git clone https://github.com/GoogleCloudPlatform/kubernetes.git ------ Maybe the github url is wrong, too slowly to clone the repo
+	- git clone https://github.com/kubernetes/kubernetes.git ~~~~~~~~~~~~~~~~~~~~ Yeah!
+	(source repo url, this would take several mins)
+	- cd kubernetes
+	- build kubernetes with Docker environment:
+	- make release ----- Error: cant connect to 'docker' daemon
+	- make quick-release ---- Error: cant connect to docker daemon socket('https://k8s.gcr.io/v2/')
+	- sudo make quick-release ---- Error: cant connect to docker daemon socket('https://k8s.gcr.io/v2/')
+----------------------------------------------------------------------------------------------------
+
+2019-08-15
+
+[referrence](https://github.com/maguowei/gotok8s)
+
+Install kubernetes in China(use mirror on aliyun)
+	- sudo -i -->(login as root, logout by run `exit`)
+	- curl -s https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add -
+	- cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
+	  > deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+	  > EOF
+	- apt-get update
+	- apt-get install -y kubelet kubeadm kubectl 
+
+
+[referrence](https://vitux.com/install-and-deploy-kubernetes-on-ubuntu/)
+
+Create Kubernetes cluster
+	- sudo swapoff -a
+	- sudo hostnamectl set-hostname master-node
+	- sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+		>>> output:
+			W0815 22:59:45.398915   24129 version.go:98] could not fetch a Kubernetes version from the internet: unable to get URL "https://dl.k8s.io/release/stable-1.txt": Get https://dl.k8s.io/release/stable-1.txt: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)
+			W0815 22:59:45.398987   24129 version.go:99] falling back to the local client version: v1.15.2
+			[init] Using Kubernetes version: v1.15.2
+			[preflight] Running pre-flight checks
+        	[WARNING IsDockerSystemdCheck]: detected "cgroupfs" as the Docker cgroup driver. The recommended driver is "systemd". Please follow the guide at https://kubernetes.io/docs/setup/cri/
+			error execution phase preflight: [preflight] Some fatal errors occurred:
+        	[ERROR NumCPU]: the number of available CPUs 1 is less than the required 2
+			[preflight] If you know what you are doing, you can make a check non-fatal with `--ignore-preflight-errors=...`
+
+----------------------------------------------------------------------------------------------------
+
+* docker docker-engine docker.io
+* apt-get install VS apt install
+* how to specify Master Node & Slave Node
+
+------------------------------------------------------------------------------------------------------
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+ZZZZ# Implement git project(mysite) into Tencent Cloud  ZZZZ
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+
+2019-08-25
+
+- Login in the Tencent Cloud Console
+	install python3
+		- sudo apt-get install -y make build-essential libssl-dev zlib1g-dev \
+		libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev \
+		libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl
+		- curl https://pyenv.run | bash
+		- add 
+		export PATH="/home/ubuntu/.pyenv/bin:$PATH"
+		eval "$(pyenv init -)"
+		eval "$(pyenv virtualenv-init -)"
+		to ~/.bashrc
+		- restart shell: bash
+		- check pyenv install correctly: pyenv versions
+		- list python versions with '3.' to get python3 latest version: pyenv install -l | grep '3.'
+		- install python3 latest version(cost a long time): pyenv install 3.7.0
+		- pyenv versions
+		- [TODO]try to install 3.7.4
+
+	- sudo apt-get install python-pip
+	- pip install django
+------------------------------------------------------------------------------------------------------
+
+2019-09-08
+- enabled ssh to TencentCloud by local terminal
+
+- sudo apt-get install apache2
+	(visit https://xxx.xxx.x.xxx to check if apache2 works)
+- git clone mysite.git
+- cd mysite
+- pyenv local 3.7.0
+
+## dependances installation for mysite project
+- pip install django
+	(maybe the django installation before is for python2 but not python3, so install django this time for python3)
+- pip install Pillow
+
+- python3 manage.py runserver
+
+- visit http://xxx.xxx.x.xxx:8000/gallery get error!
+------------------------------------------------------------------------------------------------------
+
+2019-09-10
+- ssh -i /Users/name/.ssh/candice ubuntu@xxx.xxx.x.xxx  to login to TC server on shell
+
+- (TODO)setup LAMP(ubuntu+apache2+Python) server
+[referrence:]
+https://www.digitalocean.com/community/tutorials/how-to-set-up-an-apache-mysql-and-python-lamp-server-without-frameworks-on-ubuntu-14-04
+https://zhuanlan.zhihu.com/p/63038112
+
+
+https://stackoverflow.com/questions/25436312/gitignore-not-working/40268305
+
+------------------------------------------------------------------------------------------------------
+
+2019-09-14
+[https://coderwall.com/p/ooerda/python-django-apache-ubuntu]
+
+- ssh login to TC
+	- `sudo cp -r /home/ubuntu/mysite /var/www/` copy/move /mysite project to /var/www/
+	- follow the steps of he reference guide
+
+
+[https://www.digitalocean.com/community/tutorials/how-to-serve-django-applications-with-apache-and-mod_wsgi-on-ubuntu-14-04]
+
+- sudo apt install virtualenv
+- sudo apt-get install libapache2-mod-wsgi-py3
+- cd ~/mysite
+- virtualenv -p python3 mysiteenv
+- source mysiteenv/bin/activate
+- pip install Django
+- pip install Pillow
+- 
+------------------------------------------------------------------------------------------------------
+
+2019-09-15
+[https://www.digitalocean.com/community/tutorials/how-to-serve-django-applications-with-apache-and-mod_wsgi-on-ubuntu-16-04]
+
+- vim ~/mysite/mysite/settings.py
+	- ALLOWED_HOSTS = ['SERVER_IP']
+	- STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+- sudo ufw allow 8000
+- vim /etc/apache2/site-available/000-default.conf
+	- Alias /static /home/sammy/myproject/static
+    <Directory /home/sammy/myproject/static>
+        Require all granted
+    </Directory>
+
+    <Directory /home/sammy/myproject/myproject>
+        <Files wsgi.py>
+            Require all granted
+        </Files>
+    </Directory>
+
+- chmod 664 ~/myproject/db.sqlite3
+- sudo chown :www-data ~/myproject/db.sqlite3
+- sudo ufw delete allow 8000
+- sudo ufw allow 'Apache Full'
+
+
+!!!!!!!!!TC CVM instance with secure group which restrict the ports!!!!!!!!!!!!!!!!!!!!!
+
+------------------------------------------------------------------------------------------------------
+
+2019-09-16
+
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+ZZZZ# Elasticsearch on Tencent Cloud ZZZZ
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+
+* Networks on TencentCloud: secure group, Elastic IP,,,
+* Elasticsearch VS Redis ?
+  Elasticsearch VS K8s ?
+  Elasticsearch VS RDBMS(Relational Database Management System)
+  - Elasticsearch	RDBMS
+	Cluster	Database
+	Shard	Shard
+	Index	Table
+	Field	Column
+	Document	Row
+
+## Elasticsearch: 
+	- available under the Apache license version 2.0, search (and analytics) engine, can be used as a replacement of document stores like MongoDB
+	- Key concepts:
+	Node, Cluster, Index, Document, Shard, Replicas
+	Index: a collection of different type of documents and their properties
+	Shard: Indexes are horizontally subdivided into shards.
+
+
+#TODO: install Elasticsearch
+------------------------------------------------------------------------------------------------------
+
+2019-09-17
+- ssh to TC
+- java7+ is needed. `java --version` to check java version 
+	- Install Java
+		- `sudo apt install default-jre openjdk-11-jre-headless openjdk-8-jre-headless`
+- Install Elasticsearch
+	- `sudo apt-get install apt-transport-https`
+	- `wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -`
+	- `sudo add-apt-repository "deb https://artifacts.elastic.co/packages/7.x/apt stable main"`
+	- `sudo apt-get update`
+	- `sudo apt-get install elasticsearch`
+
+
+#TODO：  Redis is more popular instead of elasticsearch?
+------------------------------------------------------------------------------------------------------
+
+2019-09-21
+- `sudo apt-get install elasticsearch` has finished, but no 'elasticsearch-*/bin' not found!
+
+# TODO: check id elasticsearch installed correctly.
+------------------------------------------------------------------------------------------------------
+
+2019-09-22
+=> because elasticsearch was installed apt source instead of zip package, don't need setup ES inside the elasticsearch-*/bin'
+
+- ssh to TC
+- `sudo systemctl enable elasticsearch.service`
+- `sudo systemctl start elasticsearch.service`
+- `curl -X GET "localhost:9200"` t check elasticsearch works
+- visit "http://xxx.xxx.x.xxx:9200" to check if the elasticsearch work with net
+	- sudo vim /etc/elasticsearch/elasticsearch.yml
+		- network.host: 0.0.0.0
+		- discovery.seed_hosts: ['127.0.0.1', '[::1]', 'xxx.xxx.x.xxx']
+- Add data to elasticsearch by following the README.md from elasticsearch Github 
+- * Chrome Extension: "Elasticsearch Head" can overview data of elasticsearch
+
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+ZZZ# Test Elasticsearch in mysite ZZZ
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+
+test if put data to ES by python with requests library
+- pip3 install requests
+- `python3`
+	- `import requests`
+	- requests.put("http://localhost:9200/candice/_doc/3", data={"user":"candice","post_date":"2019-09-22T16:37:00","message":"put by python requests"},headers={"Content-Type": "application/json"})
+	!!!	<Response: 400>
+	- requests.get("http://localhost:9200/candice/_search") <200>
+
+# TODO: Fix requests.put error?
+
+------------------------------------------------------------------------------------------------------
+
+2019-09-23
+
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+ZZZZ# diff of apt & apt-get ZZZZ
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+
+apt = most common used command options from apt-get and apt-cache
+
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+ZZZZ# Redis for mysite? ZZZZ
+ZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
+
+- install redis-server
+	- `sudo apt install redis-server`
+	- `redis-server`
+
+#TODO: implement SQL first to use redis -- Postgres(psycopg2 - py version 2.6-3.6 ?)
+[https://www.fullstackpython.com/postgresql.html]
+------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
