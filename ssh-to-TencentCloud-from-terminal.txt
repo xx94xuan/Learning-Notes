@@ -1,0 +1,26 @@
+Mac终端ssh登录腾讯云服务器
+
+前提准备：
+	- 已知服务器公网ip(123.456.7.8)
+	- 已从服务器上下载的密钥(id_rsa)
+	- 以及该密钥对应的用户名(ubuntu)
+
+
+0. mv id_rsa ~/.ssh/id_rsa
+1. chmod 400 ~/.ssh/id_rsa => It is required that the private key files CAN NOT be accessible by others.
+2. ssh -i ~/.ssh/id_rsa ubuntu@123.456.7.8
+
+
+
+
+
+
+
+		MAC					Ubuntu
+
+`brew services list` `service --status-all`
+
+
+
+
+
