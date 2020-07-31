@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html ⚡>
+<head>
+  <meta charset="utf-8">
+  <title>My AMP Page</title>
+  <script async src="https://cdn.ampproject.org/v0.js"></script>
+  <script async custom-element="amp-bind" src="https://cdn.ampproject.org/v0/amp-bind-0.1.js"></script>
+
+  <link rel="canonical" href="xxxx">
+  <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+
+  <style amp-custom>
+    .main {
+    	width: 80%;
+      margin: 16px auto;
+    }
+    .context {
+    	display: inline;
+    }
+    .more-less-btn {
+    	background-color: #FFF;
+    	border: none;
+    	outline: none;
+    	color: #03a9fc;
+    }
+    .more-less-btn:hover, .more-less-btn:focus, .more-less-btn:visited {
+    	outline: none;
+    }
+  </style>
+</head>
+<body>
+	<div class='main'>
+		<h1>My AMP Page</h1>
+	  <amp-state id="myContent">
+		  <script type="application/json">
+		  	{
+			  	"all": {
+			  		"text": "Lorem ipsum dolor sit amet, nec purto saperet at, mel at habemus officiis facilisis, usu ut brute eripuit. Eam delectus definiebas te. Ut cum habeo utinam, his ei alii tation minimum. Vix stet tractatos an.Eum tempor inermis omittam eu, te mel eruditi molestie verterem, doming eligendi efficiantur sit et. Ea eos invidunt consulatu, ea nam numquam vocibus. Eum at civibus sapientem, sit dolorem torquatos id. Dicant abhorreant ad vim, dissentias eloquentiam eos at, purto bonorum mentitum no vim. Vel ne putant equidem, an vis phaedrum definitiones, brute sententiae id eam.In harum zril atomorum usu. Exerci ridens dolorum has ex, et his mutat alterum. Vim assum dicunt in, cu quem eirmod maluisset mei. Ex euripidis ullamcorper delicatissimi cum, homero molestie iracundia te his.Omnis verear ne vis, pro no maiorum conclusionemque. In est aeque civibus insolens. Fierent electram sit no. Te alia disputando theophrastus sed, quo dolor audire quaeque te. Nihil causae mei ex, postea fabellas accommodare ne his, an vis epicurei perfecto. Eu mel torquatos maiestatis constituam, sonet aperiam pertinax id his, eam at justo veniam. Ei mea erroribus efficiantur concludaturque, soleat scribentur mel cu, qui ullum euismod iracundia cu.Dissentiet adversarium et mei, at sea veri constituam. An purto fugit incorrupte sed, ea has malis evertitur expetendis, ea quod aperiam per. Elit iusto salutandi pri te, quodsi mollis accusata ex cum. Per amet iisque diceret cu, alii natum eum ut. Id duo quando blandit, alia facilisis scribentur mel ut. Consectetuer definitiones sed ad, ut duis scripta qui.",
+			  		"class": "show-all"
+			  	},
+			  	"part": {
+			  		"text": "Lorem ipsum dolor sit amet, nec purto saperet at, mel at habemus officiis facilisis, usu ut brute eripuit. Eam delectus definiebas te. Ut cum habeo utinam, his ei alii tation minimum. Vix stet tractatos an.Eum tempor inermis omittam eu, te mel eruditi molestie verterem, doming eligendi efficiantur sit et. Ea eos invidunt consulatu, ea nam numquam vocibus. Eum at civibus sapientem, sit dolorem torq...",
+			  		"class": "show-part"
+			  	}
+				}
+			</script>
+	  </amp-state>
+	  <!-- <div class="show-part" [class]="myContent[currentState].class">
+	  	<p class='context' [text]="myContent[currentState].text">Lorem ipsum dolor sit amet, nec purto saperet at, mel at habemus officiis facilisis, usu ut brute eripuit. Eam delectus definiebas te. Ut cum habeo utinam, his ei alii tation minimum. Vix stet tractatos an.Eum tempor inermis omittam eu, te mel eruditi molestie verterem, doming eligendi efficiantur sit et. Ea eos invidunt consulatu, ea nam numquam vocibus. Eum at civibus sapientem, sit dolorem torq...</p>
+	  	<button class='more-less-btn' on="tap:AMP.setState({currentState: allShow ? 'part' : 'all', allShow: !allShow})" 
+	  		[text]="allShow ? 'Read Less ▲' : 'Read More ▼'">Read More ▼</button>
+	  </div> -->
+	  <div class="show-part" data-amp-bind-class="myContent[currentState].class">
+	  	<p class='context' data-amp-bind-text="myContent[currentState].text">Lorem ipsum dolor sit amet, nec purto saperet at, mel at habemus officiis facilisis, usu ut brute eripuit. Eam delectus definiebas te. Ut cum habeo utinam, his ei alii tation minimum. Vix stet tractatos an.Eum tempor inermis omittam eu, te mel eruditi molestie verterem, doming eligendi efficiantur sit et. Ea eos invidunt consulatu, ea nam numquam vocibus. Eum at civibus sapientem, sit dolorem torq...</p>
+	  	<button class='more-less-btn' on="tap:AMP.setState({currentState: allShow ? 'part' : 'all', allShow: !allShow})" 
+	  		data-amp-bind-text="allShow ? 'Read Less ▲' : 'Read More ▼'">Read More ▼</button>
+	  </div>
+	 </div>
+</body>
+</html>
+
+
+<!-- Keywords: more less read, amp-bind, amp-state -->
+<!-- Reference: 
+	https://fsymbols.com/signs/triangle/
+	https://amp.dev/documentation/components/amp-bind/ -->
+
+
+
